@@ -101,11 +101,36 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
   ///
   /// TodoForm에서 제출 버튼을 클릭하면 호출됩니다.
   /// 입력된 데이터로 Todo를 수정하고 Provider를 통해 업데이트합니다.
+  /// 완료된 Todo는 수정할 수 없습니다.
   ///
   /// [title] 수정된 Todo 제목
   /// [description] 수정된 Todo 설명 (선택사항)
-  Future<void> _handleSubmit(String title, String? description) async {
+  /// [startDate] 시작 일자 (선택사항)
+  /// [endDate] 완료 일자 (선택사항)
+  Future<void> _handleSubmit(
+    String title,
+    String? description,
+    DateTime? startDate,
+    DateTime? endDate,
+  ) async {
     if (_todo == null) {
+      return;
+    }
+
+    // 완료된 Todo는 수정 불가
+    if (_todo!.isCompleted) {
+      logger.w('완료된 Todo 수정 시도: ${_todo!.id}');
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (context) => ErrorDialog(
+            exception: const TodoValidationException(
+              '완료된 할일은 수정할 수 없습니다.',
+            ),
+            title: '수정 불가',
+          ),
+        );
+      }
       return;
     }
 
@@ -116,6 +141,8 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
       final updatedTodo = _todo!.copyWith(
         title: title,
         description: description,
+        startDate: startDate,
+        endDate: endDate,
       );
 
       // Provider를 통해 Todo 수정
@@ -191,6 +218,8 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
       );
     }
 
+    final isCompleted = _todo!.isCompleted;
+
     return Dialog(
       child: Container(
         padding: const EdgeInsets.all(24),
@@ -199,18 +228,50 @@ class _TodoEditScreenState extends ConsumerState<TodoEditScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              '할일 수정',
-              style: TextStyle(
+            Text(
+              isCompleted ? '할일 조회' : '할일 수정',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
+            // 완료된 Todo 안내 메시지
+            if (isCompleted) ...[
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.orange.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      color: Colors.orange.shade700,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        '완료된 할일은 조회만 가능하며 수정할 수 없습니다.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.orange.shade700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
             TodoForm(
               initialTodo: _todo,
               onSubmit: _handleSubmit,
               onCancel: _handleCancel,
+              readOnly: isCompleted, // 완료된 Todo는 읽기 전용
             ),
           ],
         ),

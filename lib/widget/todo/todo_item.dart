@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../model/todo.dart';
 
 /// Todo 목록의 개별 항목을 표시하는 위젯
@@ -97,6 +98,71 @@ class TodoItem extends StatelessWidget {
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                      const SizedBox(height: 8),
+                      // 날짜 정보 표시
+                      Row(
+                        children: [
+                          if (todo.startDate != null) ...[
+                            Icon(
+                              Icons.calendar_today,
+                              size: 14,
+                              color: Colors.grey.shade500,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '시작: ${DateFormat('yyyy-MM-dd').format(todo.startDate!)}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade600,
+                                decoration: todo.isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                              ),
+                            ),
+                            if (todo.endDate != null) const SizedBox(width: 12),
+                          ],
+                          if (todo.endDate != null) ...[
+                            Icon(
+                              Icons.event,
+                              size: 14,
+                              color: Colors.grey.shade500,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '완료: ${DateFormat('yyyy-MM-dd').format(todo.endDate!)}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey.shade600,
+                                decoration: todo.isCompleted
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      // 완료 여부 표시
+                      if (todo.isCompleted) ...[
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade100,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '완료됨',
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: Colors.green.shade700,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                         ),
                       ],
                     ],

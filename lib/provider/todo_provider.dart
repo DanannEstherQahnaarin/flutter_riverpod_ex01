@@ -165,7 +165,12 @@ class TodoNotifier extends _$TodoNotifier {
 
       // 상태 업데이트
       final updatedList = List<Todo>.from(state);
-      updatedList[todoIndex] = updatedTodo.copyWith(updatedAt: DateTime.now());
+      // 완료 상태가 true로 변경되면 완료 일자 자동 설정
+      final now = DateTime.now();
+      final finalTodo = updatedTodo.isCompleted && updatedTodo.endDate == null
+          ? updatedTodo.copyWith(updatedAt: now, endDate: now)
+          : updatedTodo.copyWith(updatedAt: now);
+      updatedList[todoIndex] = finalTodo;
       state = updatedList;
 
       stopwatch.stop();

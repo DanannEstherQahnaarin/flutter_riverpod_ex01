@@ -64,6 +64,12 @@ class CustomTextField extends StatelessWidget {
   /// true일 경우 입력이 불가능합니다.
   final bool readOnly;
 
+  /// 탭 이벤트 콜백
+  ///
+  /// 필드를 탭했을 때 호출되는 콜백입니다.
+  /// 주로 날짜 선택 등에 사용됩니다.
+  final VoidCallback? onTap;
+
   /// CustomTextField 생성자
   ///
   /// [label] 필드 라벨 (선택사항)
@@ -74,6 +80,7 @@ class CustomTextField extends StatelessWidget {
   /// [maxLines] 최대 라인 수 (기본값: 1)
   /// [maxLength] 최대 문자 수 (선택사항)
   /// [readOnly] 읽기 전용 여부 (기본값: false)
+  /// [onTap] 탭 이벤트 콜백 (선택사항)
   const CustomTextField({
     super.key,
     this.label,
@@ -84,6 +91,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.maxLength,
     this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -101,39 +109,48 @@ class CustomTextField extends StatelessWidget {
         ),
         const SizedBox(height: 8),
       ],
-      TextField(
-        controller: controller,
-        onChanged: onChanged,
-        maxLines: maxLines,
-        maxLength: maxLength,
-        readOnly: readOnly,
-        decoration: InputDecoration(
-          hintText: hint,
-          errorText: errorText,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: errorText != null ? Colors.red : Colors.grey.shade300,
+      GestureDetector(
+        onTap: onTap,
+        child: TextField(
+          controller: controller,
+          onChanged: onChanged,
+          maxLines: maxLines,
+          maxLength: maxLength,
+          readOnly: readOnly,
+          enabled: onTap == null, // onTap이 있으면 enabled를 false로 설정하여 키보드 표시 방지
+          decoration: InputDecoration(
+            hintText: hint,
+            errorText: errorText,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: errorText != null ? Colors.red : Colors.grey.shade300,
+              ),
             ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
-              color: errorText != null ? Colors.red : Colors.blue,
-              width: 2,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(
+                color: errorText != null ? Colors.red : Colors.blue,
+                width: 2,
+              ),
             ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.red),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
+            ),
+            filled: true,
+            fillColor: readOnly || onTap != null
+                ? Colors.grey.shade100
+                : Colors.white,
+            suffixIcon: onTap != null
+                ? const Icon(Icons.calendar_today, size: 20)
+                : null,
           ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.red),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.red, width: 2),
-          ),
-          filled: true,
-          fillColor: readOnly ? Colors.grey.shade100 : Colors.white,
         ),
       ),
     ],

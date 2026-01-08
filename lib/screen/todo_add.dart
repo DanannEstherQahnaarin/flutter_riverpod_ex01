@@ -59,7 +59,14 @@ class _TodoAddScreenState extends ConsumerState<TodoAddScreen> {
   ///
   /// [title] Todo 제목
   /// [description] Todo 설명 (선택사항)
-  Future<void> _handleSubmit(String title, String? description) async {
+  /// [startDate] 시작 일자 (선택사항)
+  /// [endDate] 완료 일자 (선택사항)
+  Future<void> _handleSubmit(
+    String title,
+    String? description,
+    DateTime? startDate,
+    DateTime? endDate,
+  ) async {
     logger.i('Todo 추가 시도: $title');
 
     try {
@@ -68,6 +75,8 @@ class _TodoAddScreenState extends ConsumerState<TodoAddScreen> {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: title,
         description: description,
+        startDate: startDate,
+        endDate: endDate,
       );
 
       // Provider를 통해 Todo 추가

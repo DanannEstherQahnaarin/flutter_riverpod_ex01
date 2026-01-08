@@ -3,12 +3,13 @@ import '../exception/todo_exception.dart';
 /// Todo 모델 클래스
 ///
 /// 할일(Todo) 정보를 담는 불변(immutable) 데이터 클래스입니다.
-/// 이 클래스는 할일의 제목, 설명, 완료 상태, 생성 시간 등의 정보를 관리합니다.
+/// 이 클래스는 할일의 제목, 설명, 완료 상태, 시작 일자, 완료 일자 등의 정보를 관리합니다.
 ///
 /// 주요 특징:
 /// - 불변 클래스: 모든 필드가 final로 선언되어 한 번 생성되면 변경 불가
 /// - copyWith 메서드: 불변 객체의 일부 필드만 변경하여 새 인스턴스 생성
 /// - 유효성 검증: isValid() 메서드를 통해 데이터 유효성 검증
+/// - 날짜 관리: 시작 일자와 완료 일자를 관리하며, 시작일 <= 완료일 검증
 ///
 /// 예시:
 /// ```dart
@@ -18,10 +19,15 @@ import '../exception/todo_exception.dart';
 ///   title: '프로젝트 완료',
 ///   description: 'Flutter 프로젝트를 완료합니다.',
 ///   isCompleted: false,
+///   startDate: DateTime(2024, 1, 1),
+///   endDate: DateTime(2024, 1, 31),
 /// );
 ///
 /// // 완료 상태 변경
-/// final completedTodo = todo.copyWith(isCompleted: true);
+/// final completedTodo = todo.copyWith(
+///   isCompleted: true,
+///   endDate: DateTime.now(),
+/// );
 ///
 /// // 유효성 검증
 /// if (todo.isValid()) {
@@ -65,6 +71,19 @@ class Todo {
   /// null일 수 있으며, 수정되지 않은 경우 null입니다.
   final DateTime? updatedAt;
 
+  /// Todo의 시작 일자
+  ///
+  /// 할일을 시작할 예정인 날짜입니다.
+  /// 선택 필드이며, null이 될 수 있습니다.
+  final DateTime? startDate;
+
+  /// Todo의 완료 일자
+  ///
+  /// 할일을 완료할 예정인 날짜입니다.
+  /// 선택 필드이며, null이 될 수 있습니다.
+  /// 완료 상태가 true로 변경되면 자동으로 설정될 수 있습니다.
+  final DateTime? endDate;
+
   /// Todo 생성자
   ///
   /// [id] Todo의 고유 식별자 (필수)
@@ -73,6 +92,8 @@ class Todo {
   /// [isCompleted] 완료 상태 (기본값: false)
   /// [createdAt] 생성 시간 (기본값: 현재 시간)
   /// [updatedAt] 수정 시간 (선택)
+  /// [startDate] 시작 일자 (선택)
+  /// [endDate] 완료 일자 (선택)
   ///
   /// Throws [TodoValidationException] 유효하지 않은 값이 전달된 경우
   Todo({
@@ -82,6 +103,8 @@ class Todo {
     this.isCompleted = false,
     DateTime? createdAt,
     this.updatedAt,
+    this.startDate,
+    this.endDate,
   }) : createdAt = createdAt ?? DateTime.now();
 
   /// Todo의 일부 필드만 변경하여 새로운 Todo 인스턴스를 생성합니다.
@@ -95,6 +118,8 @@ class Todo {
   /// [isCompleted] 변경할 완료 상태 (선택)
   /// [createdAt] 변경할 생성 시간 (선택)
   /// [updatedAt] 변경할 수정 시간 (선택, null을 전달하면 null로 설정)
+  /// [startDate] 변경할 시작 일자 (선택, null을 전달하면 null로 설정)
+  /// [endDate] 변경할 완료 일자 (선택, null을 전달하면 null로 설정)
   ///
   /// Returns 일부 필드가 변경된 새로운 Todo 인스턴스
   ///
@@ -103,6 +128,7 @@ class Todo {
   /// final updatedTodo = todo.copyWith(
   ///   isCompleted: true,
   ///   updatedAt: DateTime.now(),
+  ///   endDate: DateTime.now(),
   /// );
   /// ```
   Todo copyWith({
@@ -112,6 +138,8 @@ class Todo {
     bool? isCompleted,
     DateTime? createdAt,
     DateTime? updatedAt,
+    DateTime? startDate,
+    DateTime? endDate,
   }) => Todo(
     id: id ?? this.id,
     title: title ?? this.title,
@@ -119,6 +147,8 @@ class Todo {
     isCompleted: isCompleted ?? this.isCompleted,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
+    startDate: startDate ?? this.startDate,
+    endDate: endDate ?? this.endDate,
   );
 
   /// Todo의 유효성을 검증합니다.
@@ -126,6 +156,7 @@ class Todo {
   /// 다음 조건들을 검증합니다:
   /// - id가 비어있지 않아야 함
   /// - title이 비어있지 않아야 함
+  /// - 시작 일자가 완료 일자보다 늦지 않아야 함 (둘 다 있는 경우)
   ///
   /// Returns 유효한 경우 true, 그렇지 않으면 false
   ///
@@ -135,7 +166,18 @@ class Todo {
   ///   throw const TodoValidationException('Todo가 유효하지 않습니다.');
   /// }
   /// ```
-  bool isValid() => id.isNotEmpty && title.trim().isNotEmpty;
+  bool isValid() {
+    if (id.isEmpty || title.trim().isEmpty) {
+      return false;
+    }
+    // 시작 일자가 완료 일자보다 늦으면 유효하지 않음
+    if (startDate != null && endDate != null) {
+      if (startDate!.isAfter(endDate!)) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   /// Todo의 유효성을 검증하고, 유효하지 않은 경우 예외를 발생시킵니다.
   ///
@@ -153,12 +195,16 @@ class Todo {
   /// }
   /// ```
   void validate() {
-    if (!isValid()) {
-      if (id.isEmpty) {
-        throw const TodoValidationException('Todo ID는 필수입니다.');
-      }
-      if (title.trim().isEmpty) {
-        throw const TodoValidationException('Todo 제목은 필수입니다.');
+    if (id.isEmpty) {
+      throw const TodoValidationException('Todo ID는 필수입니다.');
+    }
+    if (title.trim().isEmpty) {
+      throw const TodoValidationException('Todo 제목은 필수입니다.');
+    }
+    // 시작 일자가 완료 일자보다 늦으면 유효하지 않음
+    if (startDate != null && endDate != null) {
+      if (startDate!.isAfter(endDate!)) {
+        throw const TodoValidationException('시작 일자는 완료 일자보다 늦을 수 없습니다.');
       }
     }
   }
@@ -181,6 +227,8 @@ class Todo {
     'isCompleted': isCompleted,
     'createdAt': createdAt.toIso8601String(),
     'updatedAt': updatedAt?.toIso8601String(),
+    'startDate': startDate?.toIso8601String(),
+    'endDate': endDate?.toIso8601String(),
   };
 
   /// JSON 데이터로부터 Todo 인스턴스를 생성합니다.
@@ -210,6 +258,12 @@ class Todo {
     updatedAt: json['updatedAt'] != null
         ? DateTime.parse(json['updatedAt'] as String)
         : null,
+    startDate: json['startDate'] != null
+        ? DateTime.parse(json['startDate'] as String)
+        : null,
+    endDate: json['endDate'] != null
+        ? DateTime.parse(json['endDate'] as String)
+        : null,
   );
 
   /// 두 Todo가 같은지 비교합니다.
@@ -238,5 +292,5 @@ class Todo {
   /// Returns Todo의 문자열 표현
   @override
   String toString() =>
-      'Todo(id: $id, title: $title, isCompleted: $isCompleted)';
+      'Todo(id: $id, title: $title, isCompleted: $isCompleted, startDate: $startDate, endDate: $endDate)';
 }
