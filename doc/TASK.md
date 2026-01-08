@@ -147,51 +147,51 @@
 ## 5단계: 공통 컴포넌트 개발
 
 ### 5.1 공통 버튼 컴포넌트
-- [ ] `lib/widget/common/custom_button.dart` 구현
-  - [ ] 다양한 스타일 지원 (primary, secondary 등)
-  - [ ] 다양한 크기 지원
-  - [ ] Props 기반 설계
-  - [ ] 클래스 및 파라미터에 상세 주석 작성
-  - [ ] 사용 예시 주석 포함
+- [x] `lib/widget/common/custom_button.dart` 구현
+  - [x] 다양한 스타일 지원 (primary, secondary 등)
+  - [x] 다양한 크기 지원
+  - [x] Props 기반 설계
+  - [x] 클래스 및 파라미터에 상세 주석 작성
+  - [x] 사용 예시 주석 포함
 
 ### 5.2 공통 텍스트 필드 컴포넌트
-- [ ] `lib/widget/common/custom_text_field.dart` 구현
-  - [ ] 라벨, 힌트, 에러 메시지 지원
-  - [ ] 유효성 검증 표시
-  - [ ] Props 기반 설계
-  - [ ] 상세 주석 작성
+- [x] `lib/widget/common/custom_text_field.dart` 구현
+  - [x] 라벨, 힌트, 에러 메시지 지원
+  - [x] 유효성 검증 표시
+  - [x] Props 기반 설계
+  - [x] 상세 주석 작성
 
 ### 5.3 로딩 인디케이터 컴포넌트
-- [ ] `lib/widget/common/loading_indicator.dart` 구현
-  - [ ] 재사용 가능한 로딩 위젯
-  - [ ] 상세 주석 작성
+- [x] `lib/widget/common/loading_indicator.dart` 구현
+  - [x] 재사용 가능한 로딩 위젯
+  - [x] 상세 주석 작성
 
 ### 5.4 Todo 항목 컴포넌트
-- [ ] `lib/widget/todo/todo_item.dart` 구현
-  - [ ] Todo 정보 표시
-  - [ ] 클릭 이벤트 처리
-  - [ ] 삭제 버튼 (필요 시)
-  - [ ] Props 기반 설계
-  - [ ] 상세 주석 작성
+- [x] `lib/widget/todo/todo_item.dart` 구현
+  - [x] Todo 정보 표시
+  - [x] 클릭 이벤트 처리
+  - [x] 삭제 버튼 (필요 시)
+  - [x] Props 기반 설계
+  - [x] 상세 주석 작성
 
 ### 5.5 Todo 폼 컴포넌트
-- [ ] `lib/widget/todo/todo_form.dart` 구현
-  - [ ] 제목, 설명 입력 필드
-  - [ ] 우선순위 선택 (필요 시)
-  - [ ] 유효성 검증 UI
-  - [ ] Props 기반 설계 (onSubmit 콜백)
-  - [ ] 상세 주석 작성
+- [x] `lib/widget/todo/todo_form.dart` 구현
+  - [x] 제목, 설명 입력 필드
+  - [x] 우선순위 선택 (필요 시)
+  - [x] 유효성 검증 UI
+  - [x] Props 기반 설계 (onSubmit 콜백)
+  - [x] 상세 주석 작성
 
 ### 5.6 다이얼로그 컴포넌트
-- [ ] `lib/widget/dialog/confirm_dialog.dart` 구현
-  - [ ] 확인/취소 다이얼로그
-  - [ ] 재사용 가능한 구조
-  - [ ] 상세 주석 작성
+- [x] `lib/widget/dialog/confirm_dialog.dart` 구현
+  - [x] 확인/취소 다이얼로그
+  - [x] 재사용 가능한 구조
+  - [x] 상세 주석 작성
 
-- [ ] `lib/widget/dialog/error_dialog.dart` 구현
-  - [ ] 에러 메시지 표시 다이얼로그
-  - [ ] `AppException` 처리
-  - [ ] 상세 주석 작성
+- [x] `lib/widget/dialog/error_dialog.dart` 구현
+  - [x] 에러 메시지 표시 다이얼로그
+  - [x] `AppException` 처리
+  - [x] 상세 주석 작성
 
 ---
 
