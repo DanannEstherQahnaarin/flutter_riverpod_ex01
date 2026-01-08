@@ -68,7 +68,6 @@ class _TodoAddScreenState extends ConsumerState<TodoAddScreen> {
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: title,
         description: description,
-        isCompleted: false,
       );
 
       // Provider를 통해 Todo 추가

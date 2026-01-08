@@ -84,8 +84,9 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
   ///
   /// [todoId] 삭제할 Todo의 ID
   Future<void> _handleDelete(String todoId) async {
-    logger.i('Todo 삭제 시도: $todoId');
-    logger.d('삭제 확인 다이얼로그 표시: $todoId');
+    logger
+      ..i('Todo 삭제 시도: $todoId')
+      ..d('삭제 확인 다이얼로그 표시: $todoId');
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -137,7 +138,6 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(
             expandedHeight: 100,
-            floating: false,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text('총 ${todos.length}개의 할일'),
