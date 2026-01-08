@@ -92,55 +92,55 @@
 ## 4단계: 상태 관리 (Provider) 구현
 
 ### 4.1 Todo Provider 기본 구조 구현
-- [ ] `lib/provider/todo_provider.dart` 구현
-  - [ ] `@riverpod` 어노테이션 사용
-  - [ ] `TodoNotifier` 클래스 생성
-  - [ ] 초기 상태 설정 (빈 리스트)
-  - [ ] 클래스에 상세 주석 작성
+- [x] `lib/provider/todo_provider.dart` 구현
+  - [x] `@riverpod` 어노테이션 사용
+  - [x] `TodoNotifier` 클래스 생성
+  - [x] 초기 상태 설정 (빈 리스트)
+  - [x] 클래스에 상세 주석 작성
 
 ### 4.2 Todo 목록 조회 기능
-- [ ] `getTodos()` 메서드 구현
-  - [ ] 현재 Todo 목록 반환
-  - [ ] 로깅 추가 (Info 레벨)
-  - [ ] 메서드에 상세 주석 작성
+- [x] `getTodos()` 메서드 구현
+  - [x] 현재 Todo 목록 반환
+  - [x] 로깅 추가 (Info 레벨)
+  - [x] 메서드에 상세 주석 작성
 
 ### 4.3 Todo 추가 기능
-- [ ] `addTodo(Todo todo)` 메서드 구현
-  - [ ] Todo 유효성 검증
-  - [ ] 중복 체크 (필요 시)
-  - [ ] 상태 업데이트
-  - [ ] 예외 처리 (`TodoValidationException`, `TodoDuplicateException`)
-  - [ ] 로깅 추가 (Info 레벨: 추가 시작/완료)
-  - [ ] 성능 로깅 (실행 시간 측정)
-  - [ ] 메서드에 상세 주석 작성 (파라미터, 반환값, 예외)
+- [x] `addTodo(Todo todo)` 메서드 구현
+  - [x] Todo 유효성 검증
+  - [x] 중복 체크 (필요 시)
+  - [x] 상태 업데이트
+  - [x] 예외 처리 (`TodoValidationException`, `TodoDuplicateException`)
+  - [x] 로깅 추가 (Info 레벨: 추가 시작/완료)
+  - [x] 성능 로깅 (실행 시간 측정)
+  - [x] 메서드에 상세 주석 작성 (파라미터, 반환값, 예외)
 
 ### 4.4 Todo 수정 기능
-- [ ] `updateTodo(String id, Todo updatedTodo)` 메서드 구현
-  - [ ] Todo 존재 여부 확인
-  - [ ] 유효성 검증
-  - [ ] 상태 업데이트
-  - [ ] 예외 처리 (`TodoNotFoundException`, `TodoValidationException`)
-  - [ ] 로깅 추가 (Info 레벨: 수정 시작/완료)
-  - [ ] 성능 로깅
-  - [ ] 메서드에 상세 주석 작성
+- [x] `updateTodo(String id, Todo updatedTodo)` 메서드 구현
+  - [x] Todo 존재 여부 확인
+  - [x] 유효성 검증
+  - [x] 상태 업데이트
+  - [x] 예외 처리 (`TodoNotFoundException`, `TodoValidationException`)
+  - [x] 로깅 추가 (Info 레벨: 수정 시작/완료)
+  - [x] 성능 로깅
+  - [x] 메서드에 상세 주석 작성
 
 ### 4.5 Todo 삭제 기능 (선택사항)
-- [ ] `deleteTodo(String id)` 메서드 구현
-  - [ ] Todo 존재 여부 확인
-  - [ ] 상태 업데이트
-  - [ ] 예외 처리 (`TodoNotFoundException`)
-  - [ ] 로깅 추가
-  - [ ] 메서드에 상세 주석 작성
+- [x] `deleteTodo(String id)` 메서드 구현
+  - [x] Todo 존재 여부 확인
+  - [x] 상태 업데이트
+  - [x] 예외 처리 (`TodoNotFoundException`)
+  - [x] 로깅 추가
+  - [x] 메서드에 상세 주석 작성
 
 ### 4.6 Todo 필터링/정렬 기능 (선택사항)
-- [ ] `getCompletedTodos()` 메서드 구현
-- [ ] `getPendingTodos()` 메서드 구현
-- [ ] 각 메서드에 로깅 및 주석 추가
+- [x] `getCompletedTodos()` 메서드 구현
+- [x] `getPendingTodos()` 메서드 구현
+- [x] 각 메서드에 로깅 및 주석 추가
 
 ### 4.7 Provider 코드 생성
-- [ ] `dart run build_runner build --delete-conflicting-outputs` 실행
-- [ ] 생성된 코드 확인
-- [ ] Provider 정상 동작 확인
+- [x] `dart run build_runner build --delete-conflicting-outputs` 실행
+- [x] 생성된 코드 확인
+- [x] Provider 정상 동작 확인
 
 ---
 
