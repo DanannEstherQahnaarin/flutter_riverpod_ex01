@@ -73,19 +73,19 @@
 ## 3단계: 데이터 모델 구현
 
 ### 3.1 Todo 모델 클래스 구현
-- [ ] `lib/model/todo.dart` 구현
-  - [ ] Todo 클래스 정의 (id, title, description, isCompleted, createdAt 등)
-  - [ ] 불변(immutable) 클래스로 설계
-  - [ ] `copyWith` 메서드 구현
-  - [ ] `toJson`, `fromJson` 메서드 구현 (필요 시)
-  - [ ] 클래스 및 필드에 상세 주석 작성 (PRD.md 규칙 준수)
-  - [ ] 사용 예시 주석 포함
+- [x] `lib/model/todo.dart` 구현
+  - [x] Todo 클래스 정의 (id, title, description, isCompleted, createdAt 등)
+  - [x] 불변(immutable) 클래스로 설계
+  - [x] `copyWith` 메서드 구현
+  - [x] `toJson`, `fromJson` 메서드 구현 (필요 시)
+  - [x] 클래스 및 필드에 상세 주석 작성 (PRD.md 규칙 준수)
+  - [x] 사용 예시 주석 포함
 
 ### 3.2 모델 검증 로직 (선택사항)
-- [ ] Todo 모델에 유효성 검증 메서드 추가
-  - [ ] `isValid()` 메서드 구현
-  - [ ] 검증 실패 시 `TodoValidationException` 발생
-  - [ ] 메서드에 상세 주석 작성
+- [x] Todo 모델에 유효성 검증 메서드 추가
+  - [x] `isValid()` 메서드 구현
+  - [x] 검증 실패 시 `TodoValidationException` 발생
+  - [x] 메서드에 상세 주석 작성
 
 ---
 
