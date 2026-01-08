@@ -85,6 +85,7 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
   /// [todoId] 삭제할 Todo의 ID
   Future<void> _handleDelete(String todoId) async {
     logger.i('Todo 삭제 시도: $todoId');
+    logger.d('삭제 확인 다이얼로그 표시: $todoId');
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -104,20 +105,21 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
     );
 
     if (confirmed == true) {
+      logger.i('삭제 확인됨: $todoId');
       try {
         await ref.read(todoProvider.notifier).deleteTodo(todoId);
         logger.i('Todo 삭제 완료: $todoId');
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Todo가 삭제되었습니다.')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Todo가 삭제되었습니다.')));
         }
-      } catch (e) {
-        logger.e('Todo 삭제 실패: $todoId', error: e);
+      } catch (e, stackTrace) {
+        logger.e('Todo 삭제 실패: $todoId', error: e, stackTrace: stackTrace);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('삭제 중 오류가 발생했습니다: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('삭제 중 오류가 발생했습니다: $e')));
         }
       }
     } else {
@@ -130,10 +132,7 @@ class _TodoListScreenState extends ConsumerState<TodoListScreen> {
     final todos = ref.watch(todoProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('할일 목록'),
-        elevation: 2.0,
-      ),
+      appBar: AppBar(title: const Text('할일 목록'), elevation: 2.0),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           SliverAppBar(

@@ -214,6 +214,7 @@ class TodoNotifier extends _$TodoNotifier {
   /// }
   /// ```
   Future<void> deleteTodo(String id) async {
+    final stopwatch = Stopwatch()..start();
     logger.i('Todo 삭제 시작: $id');
 
     try {
@@ -228,8 +229,10 @@ class TodoNotifier extends _$TodoNotifier {
       final updatedList = List<Todo>.from(state)..removeAt(todoIndex);
       state = updatedList;
 
-      logger.i('Todo 삭제 완료: $id');
+      stopwatch.stop();
+      logger.i('Todo 삭제 완료: $id (소요 시간: ${stopwatch.elapsedMilliseconds}ms)');
     } on TodoNotFoundException catch (e, stackTrace) {
+      stopwatch.stop();
       logger.e(
         'Todo 삭제 실패 - Todo를 찾을 수 없음: ${e.message}',
         error: e,
@@ -237,6 +240,7 @@ class TodoNotifier extends _$TodoNotifier {
       );
       rethrow;
     } on Exception catch (e, stackTrace) {
+      stopwatch.stop();
       logger.e(
         'Todo 삭제 실패 - 예상치 못한 오류: ${e.toString()}',
         error: e,

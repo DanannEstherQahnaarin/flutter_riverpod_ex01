@@ -102,53 +102,52 @@ class _TodoFormState extends State<TodoForm> {
     _validateTitle(title);
 
     if (_titleError == null && title.isNotEmpty) {
-      widget.onSubmit(
-        title,
-        description.isEmpty ? null : description,
-      );
+      widget.onSubmit(title, description.isEmpty ? null : description);
+    } else {
+      // 유효성 검증 실패 로그는 필요 시 추가 가능
     }
   }
 
   @override
   Widget build(BuildContext context) => Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+    key: _formKey,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CustomTextField(
+          label: '제목',
+          hint: '할일 제목을 입력하세요',
+          controller: _titleController,
+          errorText: _titleError,
+          onChanged: _validateTitle,
+        ),
+        const SizedBox(height: 16),
+        CustomTextField(
+          label: '설명',
+          hint: '할일 설명을 입력하세요 (선택사항)',
+          controller: _descriptionController,
+          maxLines: 3,
+        ),
+        const SizedBox(height: 24),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            CustomTextField(
-              label: '제목',
-              hint: '할일 제목을 입력하세요',
-              controller: _titleController,
-              errorText: _titleError,
-              onChanged: _validateTitle,
-            ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              label: '설명',
-              hint: '할일 설명을 입력하세요 (선택사항)',
-              controller: _descriptionController,
-              maxLines: 3,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (widget.onCancel != null) ...[
-                  CustomButton(
-                    text: '취소',
-                    style: CustomButtonStyle.secondary,
-                    onPressed: widget.onCancel,
-                  ),
-                  const SizedBox(width: 8),
-                ],
-                CustomButton(
-                  text: widget.initialTodo == null ? '추가' : '수정',
-                  onPressed: _handleSubmit,
-                ),
-              ],
+            if (widget.onCancel != null) ...[
+              CustomButton(
+                text: '취소',
+                style: CustomButtonStyle.secondary,
+                onPressed: widget.onCancel,
+              ),
+              const SizedBox(width: 8),
+            ],
+            CustomButton(
+              text: widget.initialTodo == null ? '추가' : '수정',
+              onPressed: _handleSubmit,
             ),
           ],
         ),
-      );
+      ],
+    ),
+  );
 }
